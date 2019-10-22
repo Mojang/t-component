@@ -93,4 +93,4 @@ $ yarn test
 
 ## Licence
 
-[Licenced under MIT licence](/LICENCE).
+[Licensed under MIT license](/LICENSE).
