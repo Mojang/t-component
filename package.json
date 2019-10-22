@@ -1,0 +1,40 @@
+{
+  "name": "@mojang/t-component",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "version": "2.0.0",
+  "description": "Internationalization library",
+  "scripts": {
+    "coverage": "npm run test -- --coverage",
+    "test": "jest -c ./jest.config.js --rootDir ./",
+    "build": "tsc -p ./tsconfig.json"
+  },
+  "license": "ISC",
+  "keywords": [],
+  "author": "",
+  "dependencies": {
+    "@types/dompurify": "^0.0.32",
+    "dompurify": "^1.0.10",
+    "jed": "1.1.1",
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
+  },
+  "devDependencies": {
+    "@satansdeer/git-cz": "0.1.8",
+    "@types/jest": "24.0.11",
+    "@types/jsdom": "^12.2.3",
+    "@types/react": "16.8.4",
+    "@types/react-dom": "16.8.4",
+    "gettext-parser": "3.1.0",
+    "jest": "24.7.1",
+    "prettier": "1.15.2",
+    "ts-jest": "22.4.6",
+    "typescript": "3.4.3",
+    "react-testing-library": "7.0.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/@satansdeer/git-cz/dist/cz.js"
+    }
+  }
+}
