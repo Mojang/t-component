@@ -1,8 +1,8 @@
 declare class Jed {
-  constructor(translation?: any);
-  translate: any;
+    constructor(translation?: any);
+    translate: any;
 }
 
 declare module "jed" {
-  export default Jed;
+    export default Jed;
 }

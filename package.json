@@ -1,44 +1,106 @@
 {
-  "name": "@mojang/t-component",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "version": "2.0.1",
-  "description": "Internationalization library",
-  "scripts": {
-    "coverage": "npm run test -- --coverage",
-    "test": "jest -c ./jest.config.js --rootDir ./",
-    "build": "tsc -p ./tsconfig.json"
-  },
-  "license": "MIT",
-  "keywords": [],
-  "author": "Mojang",
-  "dependencies": {
-    "@types/dompurify": "^0.0.32",
-    "dompurify": "^1.0.10",
-    "jed": "1.1.1",
-    "react": "16.8.6",
-    "react-dom": "16.8.6"
-  },
-  "devDependencies": {
-    "@satansdeer/git-cz": "0.1.8",
-    "@types/jest": "24.0.11",
-    "@types/jsdom": "^12.2.3",
-    "@types/react": "16.8.4",
-    "@types/react-dom": "16.8.4",
-    "gettext-parser": "3.1.0",
-    "jest": "24.7.1",
-    "prettier": "1.15.2",
-    "ts-jest": "22.4.6",
-    "typescript": "3.4.3",
-    "react-testing-library": "7.0.1"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/@satansdeer/git-cz/dist/cz.js"
+    "name": "@mojang/t-component",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "version": "2.0.1",
+    "description": "Internationalization library",
+    "scripts": {
+        "coverage": "npm run test -- --coverage",
+        "test": "jest",
+        "lint": "eslint src/**",
+        "build": "tsc -p ./tsconfig.json"
+    },
+    "license": "MIT",
+    "author": "Mojang",
+    "dependencies": {
+        "@types/dompurify": "^0.0.33",
+        "dompurify": "^2.0.7",
+        "jed": "^1.1.1",
+        "react": "^16.9.0",
+        "react-dom": "^16.9.0"
+    },
+    "devDependencies": {
+        "@satansdeer/git-cz": "0.1.8",
+        "@testing-library/jest-dom": "^4.1.2",
+        "@testing-library/react": "^9.3.0",
+        "@types/jest": "24.0.19",
+        "@types/jsdom": "^12.2.4",
+        "@types/react": "16.9.9",
+        "@types/react-dom": "16.9.2",
+        "@typescript-eslint/eslint-plugin": "^2.5.0",
+        "@typescript-eslint/parser": "^2.5.0",
+        "eslint": "^6.5.1",
+        "eslint-config-airbnb": "^18.0.1",
+        "eslint-config-prettier": "^6.4.0",
+        "eslint-plugin-import": "^2.18.2",
+        "eslint-plugin-jsx-a11y": "^6.2.3",
+        "eslint-plugin-prettier": "^3.1.1",
+        "eslint-plugin-react": "^7.16.0",
+        "eslint-plugin-react-hooks": "^2.2.0",
+        "jest": "24.9.0",
+        "prettier": "1.18.2",
+        "ts-jest": "24.1.0",
+        "typescript": "3.6.4"
+    },
+    "eslintConfig": {
+        "parser": "@typescript-eslint/parser",
+        "extends": [
+            "airbnb",
+            "plugin:@typescript-eslint/recommended",
+            "prettier",
+            "prettier/react",
+            "prettier/@typescript-eslint"
+        ],
+        "plugins": [
+            "prettier",
+            "@typescript-eslint",
+            "react-hooks"
+        ],
+        "env": {
+            "jest": true
+        },
+        "rules": {
+            "prettier/prettier": [
+                "error",
+                {
+                    "singleQuote": true,
+                    "trailingComma": "none",
+                    "tabWidth": 4,
+                    "printWidth": 120
+                }
+            ],
+            "react/prop-types": "off",
+            "react/jsx-filename-extension": "off",
+            "import/no-unresolved": "off",
+            "import/no-extraneous-dependencies": "off"
+        }
+    },
+    "jest": {
+        "preset": "ts-jest/presets/default",
+        "testEnvironment": "jsdom",
+        "testPathIgnorePatterns": [
+            "<rootDir>/dist"
+        ],
+        "transform": {
+            "^.+\\.tsx?$": "ts-jest"
+        },
+        "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+        "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+        "coverageDirectory": "<rootDir>/coverage",
+        "collectCoverageFrom": [
+            "<rootDir>/src/**/*.ts",
+            "<rootDir>/src/**/*.tsx",
+            "!<rootDir>/dist/*",
+            "!<rootDir>/src/*.d.ts"
+        ]
+    },
+    "config": {
+        "commitizen": {
+            "path": "./node_modules/@satansdeer/git-cz/dist/cz.js"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Mojang/t-component.git"
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Mojang/t-component.git"
-  }
 }
