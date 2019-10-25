@@ -28,20 +28,21 @@ const messages = {
   }
 };
 
-describe("T", () => {
-  describe("percentageFix function", () => {
-    it("adds a % sign", () => {
-      expect(percentageFix("%")).toEqual("%%");
-    });
-
-    it("but not on a placeholder", () => {
-      expect(percentageFix("%1$s")).toEqual("%1$s");
-    });
-
-    it("should work combined aswell", () => {
-      expect(percentageFix("%%1$s%%2$s%")).toEqual("%%%1$s%%%2$s%%");
-    });
+describe("percentageFix function", () => {
+  it("adds a % sign", () => {
+    expect(percentageFix("%")).toEqual("%%");
   });
+
+  it("but not on a placeholder", () => {
+    expect(percentageFix("%1$s")).toEqual("%1$s");
+  });
+
+  it("should work combined aswell", () => {
+    expect(percentageFix("%%1$s%%2$s%")).toEqual("%%%1$s%%%2$s%%");
+  });
+});
+
+describe("T", () => {
   describe("With messages for current locale", () => {
     describe("With placeholders", () => {
       it("Returns translated text with values instead of placeholders", () => {
