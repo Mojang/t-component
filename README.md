@@ -8,7 +8,7 @@ We are not accepting external contributions at this point in time.
 
 ## Install
 
-To install this packages run:
+To install this package run:
 
 ```console
 npm i @mojang/t-component
