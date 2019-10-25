@@ -11,6 +11,7 @@ export interface ITProps {
   isHTML?: boolean;
   domPurifyConfig?: IDomPurifyConfig;
   placeholders?: Array<string | number>;
+  context?: string;
 }
 
 export const percentageFix = (text: string): string => {
