@@ -72,10 +72,9 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({ transl
     );
 };
 
-export const T: React.FC<TProps> = props => {
+export const T: React.FC<TProps> = ({ children, placeholders, isHTML, domPurifyConfig }) => {
     const i18n: Jed = useContext(TranslationContext);
     const settings = useContext(TranslationSettingsContext);
-    const { children, placeholders, isHTML, domPurifyConfig } = props;
 
     if (!i18n || !i18n.translate) {
         return <>{children}</>;
