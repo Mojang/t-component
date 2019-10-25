@@ -10,7 +10,7 @@ export interface ITranslation {
 }
 
 export type Settings = {
-  fixPercentage?: boolean;
+  escapePercentage?: boolean;
   domPurifyConfig?: IDomPurifyConfig;
 };
 
@@ -24,7 +24,7 @@ export const TranslationProvider: React.FC<ITranslationProviderProps> = ({
   settings,
   children
 }) => {
-  const i18n = new (Jed as any)(translation);;
+  const i18n = new (Jed as any)(translation);
 
   return (
     <TranslationSettingsContext.Provider value={settings}>

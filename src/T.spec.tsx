@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-testing-library";
-import { T, percentageFix } from "./T";
+import { T, escapePercentage } from "./T";
 
 import "jest";
 import { TranslationProvider } from "./TranslationContext";
@@ -28,17 +28,17 @@ const messages = {
   }
 };
 
-describe("percentageFix function", () => {
+describe("escapePercentage function", () => {
   it("adds a % sign", () => {
-    expect(percentageFix("%")).toEqual("%%");
+    expect(escapePercentage("%")).toEqual("%%");
   });
 
   it("but not on a placeholder", () => {
-    expect(percentageFix("%1$s")).toEqual("%1$s");
+    expect(escapePercentage("%1$s")).toEqual("%1$s");
   });
 
   it("should work combined aswell", () => {
-    expect(percentageFix("%%1$s%%2$s%")).toEqual("%%%1$s%%%2$s%%");
+    expect(escapePercentage("%%1$s%%2$s%")).toEqual("%%%1$s%%%2$s%%");
   });
 });
 
@@ -150,7 +150,7 @@ describe("T", () => {
         const { container } = render(
           <TranslationProvider
             translation={messages}
-            settings={{ fixPercentage: true }}
+            settings={{ escapePercentage: true }}
           >
             <T placeholders={["75"]} isHTML>
               percentage sign %1$s%
