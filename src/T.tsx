@@ -37,19 +37,13 @@ export const T: React.FC<ITProps> = ({ children, placeholders, isHTML, domPurify
     translation = percentageFix(translation);
   }
 
-  translation = i18n.translate(translation).fetch(...(placeholders || []));
+  translation = DOMPurify.sanitize(i18n.translate(translation).fetch(...(placeholders || [])), {
+      ...defaultDomPurifySettings,
+      ...(settings && settings.domPurifyConfig ? settings.domPurifyConfig : {}),
+      ...(domPurifyConfig || {})
+  }).toString();
 
-  if (isHTML) {
-    translation = DOMPurify.sanitize(translation, {
-        ...defaultDomPurifySettings,
-        ...(settings && settings.domPurifyConfig ? settings.domPurifyConfig : {}),
-        ...(domPurifyConfig || {})
-    }).toString();
-
-    return <span dangerouslySetInnerHTML={{ __html: translation }} />;
-  }
-
-  return <>{translation}</>;
+  return isHTML ? <span dangerouslySetInnerHTML={{ __html: translation }} /> : <>{translation}</>;
 };
 
 export const useTranslation = () => {

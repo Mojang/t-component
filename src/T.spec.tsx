@@ -69,6 +69,26 @@ describe("T", () => {
       });
     });
 
+    describe("When isHTML is false", () => {
+      it("Escapes placeholders", () => {
+        const { container } = render(
+          <TranslationProvider translation={messages}>
+            <T
+              placeholders={[
+                "<script>test</script>",
+                "<iframe src-javascript:alert('s')>"
+              ]}
+            >
+              Message with placeholders: %1$s, %2$s
+            </T>
+          </TranslationProvider>
+        );
+        expect(container.textContent).toEqual(
+          "Translated message with placeholder: , "
+        );
+      });
+    });
+
     describe("When isHTML is true", () => {
       it("Renders html", () => {
         const { container } = render(
