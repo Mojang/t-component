@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-testing-library";
-import { T } from "./T";
+import { T, escapePercentage } from "./T";
 
 import "jest";
 import { TranslationProvider } from "./TranslationContext";
@@ -22,10 +22,25 @@ const messages = {
         "Translated message with placeholder: %1$s, %2$s"
       ],
       "This should be escaped %1$s.": ["Escaped placeholder: %1$s."],
+      "percentage sign %1$s%%": ["translated percentage sign %1$s%%"],
       "Untranslated message.": ""
     }
   }
 };
+
+describe("escapePercentage function", () => {
+  it("adds a % sign", () => {
+    expect(escapePercentage("%")).toEqual("%%");
+  });
+
+  it("but not on a placeholder", () => {
+    expect(escapePercentage("%1$s")).toEqual("%1$s");
+  });
+
+  it("should work combined aswell", () => {
+    expect(escapePercentage("%%1$s%%2$s%")).toEqual("%%%1$s%%%2$s%%");
+  });
+});
 
 describe("T", () => {
   describe("With messages for current locale", () => {
@@ -74,6 +89,7 @@ describe("T", () => {
         );
       });
     });
+
     describe("When isHTML is true", () => {
       it("Renders html", () => {
         const { container } = render(
@@ -100,6 +116,20 @@ describe("T", () => {
             `<span>Test <a target="_blank">link</a></span>`
           );
         });
+
+        it("Preserves the target field of the links", () => {
+          const { container } = render(
+            <TranslationProvider
+              translation={messages}
+              settings={{ domPurifyConfig: { ADD_ATTR: ["target"] } }}
+            >
+              <T isHTML>{'Test <a target="_blank">link</a>'}</T>
+            </TranslationProvider>
+          );
+          expect(container.innerHTML).toEqual(
+            '<span>Test <a target="_blank">link</a></span>'
+          );
+        });
       });
       describe("Without ADD_ATTR target", () => {
         it("Removes the target field of the links", () => {
@@ -115,6 +145,21 @@ describe("T", () => {
   });
 
   describe("Without messages for current locale", () => {
+    describe("With percentage sign", () => {
+      it("should find correct translation", () => {
+        const { container } = render(
+          <TranslationProvider
+            translation={messages}
+            settings={{ escapePercentage: true }}
+          >
+            <T placeholders={["75"]} isHTML>
+              percentage sign %1$s%
+            </T>
+          </TranslationProvider>
+        );
+        expect(container.textContent).toEqual("translated percentage sign 75%");
+      });
+    });
     describe("Without placeholders", () => {
       it("Returns english fallback", () => {
         const { container } = render(
