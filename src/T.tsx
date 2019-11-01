@@ -1,6 +1,5 @@
 import * as DOMPurify from "dompurify";
 import * as React from "react";
-import { useContext } from "react";
 import { cleanMessage } from "./cleanMessage";
 import { TranslationContext } from "./TranslationContext";
 import Jed from "jed";
@@ -14,7 +13,7 @@ export interface ITProps {
 }
 
 export const T = (props: ITProps) => {
-  const i18n: Jed = useContext(TranslationContext);
+  const i18n: Jed = React.useContext(TranslationContext);
 
   const { children, placeholders, isHTML, domPurifyConfig } = props;
   if (!i18n || !i18n.translate) {
@@ -36,7 +35,7 @@ export const T = (props: ITProps) => {
 };
 
 export const useTranslation = () => {
-  const i18n: Jed = useContext(TranslationContext);
+  const i18n: Jed = React.useContext(TranslationContext);
 
   return {
     t: (text: string, placeholders: string[] = []) =>
