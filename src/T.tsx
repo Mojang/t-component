@@ -1,7 +1,10 @@
 import * as DOMPurify from "dompurify";
 import * as React from "react";
 import { cleanMessage } from "./cleanMessage";
-import { TranslationContext } from "./TranslationContext";
+import {
+  TranslationContext,
+  TranslationSettingsContext
+} from "./TranslationContext";
 import Jed from "jed";
 import { IDomPurifyConfig } from "./IDomPurifyConfig";
 
@@ -10,35 +13,67 @@ export interface ITProps {
   isHTML?: boolean;
   domPurifyConfig?: IDomPurifyConfig;
   placeholders?: Array<string | number>;
+  context?: string;
 }
 
-export const T = (props: ITProps) => {
-  const i18n: Jed = React.useContext(TranslationContext);
+export const escapePercentage = (text: string): string => {
+  return text.replace(/(?!%[0-9]{1,2}\$s)%/g, "%%");
+};
 
-  const { children, placeholders, isHTML, domPurifyConfig } = props;
+const defaultDomPurifySettings = {
+  RETURN_DOM_FRAGMENT: false,
+  RETURN_DOM: false
+};
+
+export const T: React.FC<ITProps> = ({
+  children,
+  placeholders,
+  isHTML,
+  domPurifyConfig
+}) => {
+  const i18n: Jed = React.useContext(TranslationContext);
+  const settings = React.useContext(TranslationSettingsContext);
+
   if (!i18n || !i18n.translate) {
     return <>{children}</>;
   }
 
-  const args = placeholders || [];
-  const translation = DOMPurify.sanitize(
-    i18n.translate(cleanMessage(children)).fetch(...args),
-    domPurifyConfig
-      ? { ...domPurifyConfig, RETURN_DOM_FRAGMENT: false, RETURN_DOM: false }
-      : undefined
-  );
+  let translation = cleanMessage(children);
+
+  if (settings && settings.escapePercentage) {
+    translation = escapePercentage(translation);
+  }
+
+  translation = DOMPurify.sanitize(
+    i18n.translate(translation).fetch(...(placeholders || [])),
+    {
+      ...defaultDomPurifySettings,
+      ...(settings && settings.domPurifyConfig ? settings.domPurifyConfig : {}),
+      ...(domPurifyConfig || {})
+    }
+  ).toString();
+
   return isHTML ? (
-    <span dangerouslySetInnerHTML={{ __html: translation.toString() }} />
+    <span dangerouslySetInnerHTML={{ __html: translation }} />
   ) : (
-    <>{translation.toString()}</>
+    <>{translation}</>
   );
 };
 
 export const useTranslation = () => {
   const i18n: Jed = React.useContext(TranslationContext);
+  const settings = React.useContext(TranslationSettingsContext);
 
   return {
-    t: (text: string, placeholders: string[] = []) =>
-      i18n ? i18n.translate(text).fetch(...placeholders) : text
+    t: (text: string, placeholders: string[] = []): string => {
+      if (!i18n) {
+        return text;
+      }
+
+      const translation =
+        settings && settings.escapePercentage ? escapePercentage(text) : text;
+
+      return i18n.translate(translation).fetch(...placeholders);
+    }
   };
 };
