@@ -1,6 +1,5 @@
 import * as DOMPurify from "dompurify";
 import * as React from "react";
-import { useContext } from "react";
 import { cleanMessage } from "./cleanMessage";
 import {
   TranslationContext,
@@ -32,8 +31,8 @@ export const T: React.FC<ITProps> = ({
   isHTML,
   domPurifyConfig
 }) => {
-  const i18n: Jed = useContext(TranslationContext);
-  const settings = useContext(TranslationSettingsContext);
+  const i18n: Jed = React.useContext(TranslationContext);
+  const settings = React.useContext(TranslationSettingsContext);
 
   if (!i18n || !i18n.translate) {
     return <>{children}</>;
@@ -62,8 +61,8 @@ export const T: React.FC<ITProps> = ({
 };
 
 export const useTranslation = () => {
-  const i18n: Jed = useContext(TranslationContext);
-  const settings = useContext(TranslationSettingsContext);
+  const i18n: Jed = React.useContext(TranslationContext);
+  const settings = React.useContext(TranslationSettingsContext);
 
   return {
     t: (text: string, placeholders: string[] = []): string => {
