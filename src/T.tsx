@@ -1,9 +1,10 @@
 import * as DOMPurify from "dompurify";
 import * as React from "react";
+import { useContext } from "react";
 import { cleanMessage } from "./cleanMessage";
 import {
   TranslationContext,
-  TranslationSettingsContext
+  TranslationSettingsContext,
 } from "./TranslationContext";
 import Jed from "jed";
 import { IDomPurifyConfig } from "./IDomPurifyConfig";
@@ -22,21 +23,17 @@ export const escapePercentage = (text: string): string => {
 
 const defaultDomPurifySettings = {
   RETURN_DOM_FRAGMENT: false,
-  RETURN_DOM: false
+  RETURN_DOM: false,
 };
 
 export const T: React.FC<ITProps> = ({
   children,
   placeholders,
   isHTML,
-  domPurifyConfig
+  domPurifyConfig,
 }) => {
-  const i18n: Jed = React.useContext(TranslationContext);
-  const settings = React.useContext(TranslationSettingsContext);
-
-  if (!i18n || !i18n.translate) {
-    return <>{children}</>;
-  }
+  const i18n: Jed = useContext(TranslationContext) || new Jed();
+  const settings = useContext(TranslationSettingsContext);
 
   let translation = cleanMessage(children);
 
@@ -49,7 +46,7 @@ export const T: React.FC<ITProps> = ({
     {
       ...defaultDomPurifySettings,
       ...(settings && settings.domPurifyConfig ? settings.domPurifyConfig : {}),
-      ...(domPurifyConfig || {})
+      ...(domPurifyConfig || {}),
     }
   ).toString();
 
@@ -74,6 +71,6 @@ export const useTranslation = () => {
         settings && settings.escapePercentage ? escapePercentage(text) : text;
 
       return i18n.translate(translation).fetch(...placeholders);
-    }
+    },
   };
 };
