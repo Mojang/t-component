@@ -6,7 +6,7 @@ import {
   TranslationContext,
   TranslationSettingsContext,
 } from "./TranslationContext";
-import Jed from "jed";
+import { Jed } from "jed";
 import { IDomPurifyConfig } from "./IDomPurifyConfig";
 
 export interface ITProps {
@@ -32,7 +32,7 @@ export const T: React.FC<ITProps> = ({
   isHTML,
   domPurifyConfig,
 }) => {
-  const i18n: Jed = useContext(TranslationContext) || new Jed();
+  const i18n: Jed = useContext(TranslationContext) || new Jed({});
   const settings = useContext(TranslationSettingsContext);
 
   let translation = cleanMessage(children);

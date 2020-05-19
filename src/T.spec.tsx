@@ -12,20 +12,20 @@ const messages = {
       "": {
         domain: "messages",
         lang: "en-US",
-        plural_forms: "nplurals=2; plural=(n != 1);"
+        plural_forms: "nplurals=2; plural=(n != 1);",
       },
       Message: ["Test translation."],
       "Message with placeholder: %1$s": [
-        "Translated message with placeholder: %1$s."
+        "Translated message with placeholder: %1$s.",
       ],
       "Message with placeholders: %1$s, %2$s": [
-        "Translated message with placeholder: %1$s, %2$s"
+        "Translated message with placeholder: %1$s, %2$s",
       ],
       "This should be escaped %1$s.": ["Escaped placeholder: %1$s."],
       "percentage sign %1$s%%": ["translated percentage sign %1$s%%"],
-      "Untranslated message.": ""
-    }
-  }
+      "Untranslated message.": "",
+    },
+  },
 };
 
 describe("escapePercentage function", () => {
@@ -77,7 +77,7 @@ describe("T", () => {
             <T
               placeholders={[
                 "<script>test</script>",
-                "<iframe src-javascript:alert('s')>"
+                "<iframe src-javascript:alert('s')>",
               ]}
             >
               Message with placeholders: %1$s, %2$s
@@ -183,6 +183,13 @@ describe("T", () => {
           "Untranslated message with placeholder: 123."
         );
       });
+    });
+  });
+
+  describe("without context", () => {
+    it("returns the original text", () => {
+      const { container } = render(<T>Message</T>);
+      expect(container.textContent).toEqual("Message");
     });
   });
 });

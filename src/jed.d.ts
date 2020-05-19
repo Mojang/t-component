@@ -4,5 +4,5 @@ declare class Jed {
 }
 
 declare module "jed" {
-  export default Jed;
+  export { Jed };
 }
