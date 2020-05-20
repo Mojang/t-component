@@ -2,7 +2,7 @@
   "name": "@mojang/t-component",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Internationalization library",
   "scripts": {
     "coverage": "npm run test -- --coverage",

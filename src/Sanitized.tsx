@@ -8,25 +8,21 @@ import {
 } from "./TranslationContext";
 import { Jed } from "jed";
 import { IDomPurifyConfig } from "./IDomPurifyConfig";
+import { escapePercentage } from "./T";
 
-export interface ITProps {
+export interface SanitizedProps {
   children: string;
-  isHTML?: boolean;
   domPurifyConfig?: IDomPurifyConfig;
   placeholders?: Array<string | number>;
   context?: string;
 }
-
-export const escapePercentage = (text: string): string => {
-  return text.replace(/(?!%[0-9]{1,2}\$s)%/g, "%%");
-};
 
 const defaultDomPurifySettings = {
   RETURN_DOM_FRAGMENT: false,
   RETURN_DOM: false,
 };
 
-export const T: React.FC<ITProps> = ({
+export const Sanitized: React.FC<SanitizedProps> = ({
   children,
   placeholders,
   domPurifyConfig,
