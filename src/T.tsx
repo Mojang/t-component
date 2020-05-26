@@ -61,16 +61,52 @@ export const useTranslation = () => {
   const i18n: Jed = React.useContext(TranslationContext);
   const settings = React.useContext(TranslationSettingsContext);
 
-  return {
-    t: (text: string, placeholders: string[] = []): string => {
-      if (!i18n) {
-        return text;
+  function translate(
+    text: string,
+    placeholders: string[],
+    isHTML: false,
+    domPurifyConfig?: IDomPurifyConfig
+  ): string;
+
+  function translate(
+    text: string,
+    placeholders: string[],
+    isHTML: true,
+    domPurifyConfig?: IDomPurifyConfig
+  ): React.ReactNode;
+
+  function translate(
+    text: string,
+    placeholders: string[] = [],
+    isHTML: boolean = false,
+    domPurifyConfig?: IDomPurifyConfig
+  ) {
+    if (!i18n) {
+      return text;
+    }
+
+    const translation =
+      settings && settings.escapePercentage ? escapePercentage(text) : text;
+
+    const result = DOMPurify.sanitize(
+      i18n.translate(translation).fetch(...(placeholders || [])),
+      {
+        ...defaultDomPurifySettings,
+        ...(settings && settings.domPurifyConfig
+          ? settings.domPurifyConfig
+          : {}),
+        ...(domPurifyConfig || {}),
       }
+    ).toString();
 
-      const translation =
-        settings && settings.escapePercentage ? escapePercentage(text) : text;
+    return isHTML ? (
+      <span dangerouslySetInnerHTML={{ __html: result }} />
+    ) : (
+      result
+    );
+  }
 
-      return i18n.translate(translation).fetch(...placeholders);
-    },
+  return {
+    t: translate,
   };
 };
