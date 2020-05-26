@@ -63,22 +63,7 @@ export const useTranslation = () => {
 
   function translate(
     text: string,
-    placeholders: string[],
-    isHTML: false,
-    domPurifyConfig?: IDomPurifyConfig
-  ): string;
-
-  function translate(
-    text: string,
-    placeholders: string[],
-    isHTML: true,
-    domPurifyConfig?: IDomPurifyConfig
-  ): React.ReactNode;
-
-  function translate(
-    text: string,
     placeholders: string[] = [],
-    isHTML: boolean = false,
     domPurifyConfig?: IDomPurifyConfig
   ) {
     if (!i18n) {
@@ -99,11 +84,7 @@ export const useTranslation = () => {
       }
     ).toString();
 
-    return isHTML ? (
-      <span dangerouslySetInnerHTML={{ __html: result }} />
-    ) : (
-      result
-    );
+    return result;
   }
 
   return {
