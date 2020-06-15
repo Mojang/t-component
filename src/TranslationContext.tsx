@@ -3,9 +3,7 @@ import * as Jed from "jed";
 import { IDomPurifyConfig } from "./IDomPurifyConfig";
 
 export const TranslationContext = React.createContext(undefined);
-export const TranslationSettingsContext = React.createContext<
-  Settings | undefined
->(undefined);
+export const TranslationSettingsContext = React.createContext<Settings | undefined>(undefined);
 
 export interface ITranslation {
   [key: string]: string | any;
@@ -14,7 +12,6 @@ export interface ITranslation {
 export type Settings = {
   escapePercentage?: boolean;
   domPurifyConfig?: IDomPurifyConfig;
-  isHTML?: boolean;
 };
 
 export interface ITranslationProviderProps {
@@ -25,7 +22,7 @@ export interface ITranslationProviderProps {
 export const TranslationProvider: React.FC<ITranslationProviderProps> = ({
   translation,
   settings,
-  children,
+  children
 }) => {
   const i18n = new (Jed as any)(translation);
 

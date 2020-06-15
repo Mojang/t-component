@@ -144,19 +144,6 @@ describe("T", () => {
     });
   });
 
-  describe("When isHTML in context is true", () => {
-    it("Renders html", () => {
-      const { container } = render(
-        <TranslationProvider translation={messages} settings={{ isHTML: true }}>
-          <T>{"Test <strong>html</strong> message."}</T>
-        </TranslationProvider>
-      );
-      expect(container.innerHTML).toEqual(
-        "<span>Test <strong>html</strong> message.</span>"
-      );
-    });
-  });
-
   describe("Without messages for current locale", () => {
     describe("With percentage sign", () => {
       it("should find correct translation", () => {
