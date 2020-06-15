@@ -34,6 +34,7 @@ export const T: React.FC<ITProps> = ({
 }) => {
   const i18n: Jed = useContext(TranslationContext) || new Jed({});
   const settings = useContext(TranslationSettingsContext);
+  const renderAsHTML = isHTML || (settings && settings.isHTML);
 
   let translation = cleanMessage(children);
 
@@ -50,7 +51,7 @@ export const T: React.FC<ITProps> = ({
     }
   ).toString();
 
-  return isHTML ? (
+  return renderAsHTML ? (
     <span dangerouslySetInnerHTML={{ __html: translation }} />
   ) : (
     <>{translation}</>
