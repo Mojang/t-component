@@ -7,7 +7,8 @@
   "scripts": {
     "coverage": "npm run test -- --coverage",
     "test": "jest -c ./jest.config.js --rootDir ./",
-    "build": "tsc -p ./tsconfig.json"
+    "build": "tsc -p ./tsconfig.json",
+    "release": "npm run build && npm run test && npm login && npm publish"
   },
   "license": "MIT",
   "keywords": [],
