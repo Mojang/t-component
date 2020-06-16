@@ -21,6 +21,9 @@ const messages = {
       "Message with placeholders: %1$s, %2$s": [
         "Translated message with placeholder: %1$s, %2$s",
       ],
+      "Message with script": [
+        "Translated message with script<script></script>",
+      ],
       "This should be escaped %1$s.": ["Escaped placeholder: %1$s."],
       "percentage sign %1$s%%": ["translated percentage sign %1$s%%"],
       "Untranslated message.": "",
@@ -70,11 +73,34 @@ describe("T", () => {
       });
     });
 
-    describe("When isHTML is false", () => {
-      it("Escapes placeholders", () => {
+    describe("When isHTML is false", () => {});
+
+    describe("When isHTML is true", () => {
+      it("Renders html", () => {
+        const { container } = render(
+          <TranslationProvider translation={messages}>
+            <T isHTML>{"Test <strong>html</strong> message."}</T>
+          </TranslationProvider>
+        );
+        expect(container.innerHTML).toEqual(
+          "<span>Test <strong>html</strong> message.</span>"
+        );
+      });
+
+      it("Sanitizes string", () => {
+        const { container } = render(
+          <TranslationProvider translation={messages}>
+            <T isHTML>Message with script</T>
+          </TranslationProvider>
+        );
+        expect(container.textContent).toEqual("Translated message with script");
+      });
+
+      it("Sanitizes placeholders", () => {
         const { container } = render(
           <TranslationProvider translation={messages}>
             <T
+              isHTML
               placeholders={[
                 "<script>test</script>",
                 "<iframe src-javascript:alert('s')>",
@@ -86,19 +112,6 @@ describe("T", () => {
         );
         expect(container.textContent).toEqual(
           "Translated message with placeholder: , "
-        );
-      });
-    });
-
-    describe("When isHTML is true", () => {
-      it("Renders html", () => {
-        const { container } = render(
-          <TranslationProvider translation={messages}>
-            <T isHTML>{"Test <strong>html</strong> message."}</T>
-          </TranslationProvider>
-        );
-        expect(container.innerHTML).toEqual(
-          "<span>Test <strong>html</strong> message.</span>"
         );
       });
 

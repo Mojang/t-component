@@ -41,20 +41,20 @@ export const T: React.FC<ITProps> = ({
     translation = escapePercentage(translation);
   }
 
-  translation = DOMPurify.sanitize(
-    i18n.translate(translation).fetch(...(placeholders || [])),
-    {
+  const translatedString = i18n
+    .translate(translation)
+    .fetch(...(placeholders || []));
+
+  if (isHTML) {
+    const sanitizedString = DOMPurify.sanitize(translatedString, {
       ...defaultDomPurifySettings,
       ...(settings && settings.domPurifyConfig ? settings.domPurifyConfig : {}),
       ...(domPurifyConfig || {}),
-    }
-  ).toString();
-
-  return isHTML ? (
-    <span dangerouslySetInnerHTML={{ __html: translation }} />
-  ) : (
-    <>{translation}</>
-  );
+    }).toString();
+    return <span dangerouslySetInnerHTML={{ __html: sanitizedString }} />;
+  } else {
+    return <>{translatedString}</>;
+  }
 };
 
 export const useTranslation = () => {
